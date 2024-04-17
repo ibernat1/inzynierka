@@ -8,6 +8,8 @@ import javax.inject.Inject
 
 class FileManager @Inject constructor(@ApplicationContext private val context: Context) {
     fun getName(): String {
+        //LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HHmmss"))
+
         val currentDateTime = Calendar.getInstance()
         val year = currentDateTime.get(Calendar.YEAR)
         val month = currentDateTime.get(Calendar.MONTH) + 1 // miesiące są liczone od 0 do 11

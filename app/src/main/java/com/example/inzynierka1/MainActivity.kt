@@ -19,8 +19,8 @@ class MainActivity : ComponentActivity(), SavedStateRegistryOwner {
         super.onCreate(savedInstanceState)
         setContent {
             Inzynierka1Theme {
-                val viewModel = viewModel<MainViewModel>()
-                viewModel.onCreate()
+//                val viewModel = viewModel<MainViewModel>()
+//                viewModel.onCreate()
                 Navigation()
 //                MainActivityScreen()
             }

@@ -4,25 +4,15 @@ import android.content.Context
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.inzynierka1.FileManager
-import com.example.inzynierka1.uiState.MainUiState
 import com.example.inzynierka1.Sensors
+import com.example.inzynierka1.uiState.MainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 
@@ -50,6 +40,7 @@ class MainViewModel @Inject constructor(
 
     init {
         _uiState.value = MainUiState()
+        onCreate()
     }
 
     private val TAG = "Main_Activity_ViewModel"
@@ -70,7 +61,7 @@ class MainViewModel @Inject constructor(
         val directory =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         val name = fileManager.getName()
-        Log.d(TAG,name)
+        Log.d(TAG, name)
         val file = File(directory, name)
         file.createNewFile()
 
@@ -84,7 +75,7 @@ class MainViewModel @Inject constructor(
         Log.d(TAG, "Zapisano plik")
     }
 
-//    private var sensorValues = mutableListOf<String>()
+    //    private var sensorValues = mutableListOf<String>()
     private var isCollectingData = false
 
     fun writeSensors() {

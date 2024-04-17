@@ -16,11 +16,16 @@ import com.example.inzynierka1.viewmodels.MainViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
+private  const val TAG = "SENSORS"
+interface SensorsListener {
+    fun onMessageChanged(message: String)
+}
+
 class Sensors @Inject constructor(@ApplicationContext private val context: Context): SensorEventListener{
     private lateinit var sensorManager: SensorManager
     private var message: String by mutableStateOf("brak danych")
-    private var values = mutableListOf<String>()
-    private var listener: SensorsListener? = null
+    private val values = mutableListOf<String>()
+//    private var listener: SensorsListener? = null
 
     private var mainViewModel: MainViewModel? = null
 
@@ -28,23 +33,24 @@ class Sensors @Inject constructor(@ApplicationContext private val context: Conte
         this.mainViewModel = mainViewModel
     }
 
-    fun setListener(listener: SensorsListener) {
-        this.listener = listener
-    }
+//    fun setListener(listener: SensorsListener) {
+//        this.listener = listener
+//    }
 
     fun setUpSensorStuff() {
         // Create the sensor manager
         sensorManager = context.getSystemService(SENSOR_SERVICE) as SensorManager
-
+        Log.d(TAG, "obtained sensorManager")
         // Specify the sensor you want to listen to
         sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)?.also { accelerometer ->
             sensorManager.registerListener(
                 this,
                 accelerometer,
-                SensorManager.SENSOR_DELAY_NORMAL,
-                SensorManager.SENSOR_DELAY_NORMAL
+                SensorManager.SENSOR_DELAY_FASTEST
+//                SensorManager.SENSOR_DELAY_NORMAL
             )
         }
+        Log.d(TAG, "regsitered the listener")
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
@@ -56,7 +62,7 @@ class Sensors @Inject constructor(@ApplicationContext private val context: Conte
 //                "Sensors",message
 //            )
             values.add(message)
-//            Log.d("Sensors",values.toString())
+            Log.d("Sensors",values.size.toString())
         }
     }
 
@@ -64,9 +70,7 @@ class Sensors @Inject constructor(@ApplicationContext private val context: Conte
         return
     }
 
-    interface SensorsListener {
-        fun onMessageChanged(message: String)
-    }
+
 
     fun getValues(): List<String> {
         Log.d("Sensors", values.toString())
