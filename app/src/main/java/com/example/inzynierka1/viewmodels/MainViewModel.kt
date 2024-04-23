@@ -8,11 +8,17 @@ import androidx.lifecycle.ViewModel
 import com.example.inzynierka1.FileManager
 import com.example.inzynierka1.Sensors
 import com.example.inzynierka1.uiState.MainUiState
+import com.example.inzynierka1.uiState.UserState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 
@@ -25,7 +31,7 @@ class MainViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(MainUiState())
     val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
 
-    fun updateMessage(text: String) {
+    private fun updateMessage(text: String) {
         _uiState.update { currentState ->
             currentState.copy(
                 message = text
@@ -33,10 +39,19 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun updateButton(text: String) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                button = text
+            )
+        }
+    }
 
-//    private val _uiState = MutableLiveData(MainUiState())
-//    val uiState: LiveData<MainUiState>
-//        get() = _uiState
+    private fun updateUserState(userState: UserState){
+        _uiState.update { currentState ->
+            currentState.copy(userState = userState)
+        }
+    }
 
     init {
         _uiState.value = MainUiState()
@@ -78,47 +93,37 @@ class MainViewModel @Inject constructor(
     //    private var sensorValues = mutableListOf<String>()
     private var isCollectingData = false
 
-    fun writeSensors() {
-        val sensorValues = sensors.getValues()
-//        updateSensorMessage("Kliknięto przycisk")
-        updateMessage("Zapisywanie danych")
-        write(sensorValues)
-    }
-
 //    fun writeSensors() {
-//        if (!isCollectingData) {
-//            isCollectingData = true
-//            //sensors.nullValues()
-//            Log.d(TAG, "Rozpoczęto zbieranie danych")
-//            CoroutineScope(Dispatchers.Default).launch {
-//                delay(5000)
-//                withContext(Dispatchers.Main) {
-//                    isCollectingData = false
-//                    val sensorValues = sensors.getValues()
-//                    Log.d(TAG, "Zakończono zbieranie danych")
-//                    write(sensorValues)
-//                }
-//            }
-//        } else {
-//            updateSensorMessage("Dane są zbierane")
-//        }
+////        sensors.nullValues()
+//        val sensorValues = sensors.getValues()
+////        updateSensorMessage("Kliknięto przycisk")
+//        updateMessage("Zapisywanie danych")
+//        write(sensorValues)
 //    }
 
-//    fun updateSensorMessage(message: String) {
-//        mainUIState.message = message
-//    }
-
-//    fun updateSensorMessage(newMessage: String) {
-//        // Pobranie bieżącego stanu UI
-//        val currentState = _uiState.value ?: MainUiState()
-//
-//        // Utworzenie kopii stanu z zaktualizowanym komunikatem
-//        val updatedState = currentState.copy(message = newMessage)
-//
-//        // Ustawienie nowego stanu UI
-//        _uiState.value = updatedState
-//    }
-
-
+    fun writeSensors() {
+        if (!isCollectingData) {
+            isCollectingData = true
+            sensors.nullValues()
+            Log.d(TAG, "Rozpoczęto zbieranie danych")
+            updateMessage("Trwa zbieranie danych")
+            updateButton("Trwa zbieranie danych")
+            updateUserState(UserState.WALKING)
+            CoroutineScope(Dispatchers.Default).launch {
+                delay(5000)
+                withContext(Dispatchers.Main) {
+                    isCollectingData = false
+                    val sensorValues = sensors.getValues()
+                    Log.d(TAG, "Zakończono zbieranie danych")
+                    updateMessage("Zakończono zbieranie danych")
+                    updateButton("Rozpocznij ponownie")
+                    updateUserState(UserState.STANDING)
+                    write(sensorValues)
+                }
+            }
+        } else {
+            updateMessage("Dane są zbierane")
+        }
+    }
 }
 

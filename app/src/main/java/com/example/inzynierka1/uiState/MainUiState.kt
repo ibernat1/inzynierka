@@ -1,7 +1,12 @@
 package com.example.inzynierka1.uiState
 
-import javax.inject.Inject
-
 data class MainUiState (
-    var message: String = "Brak danych"
+    val message: String = "Aby rozpocząć kliknij przycisk na dole ekranu",
+    val button: String = "Rozpocznij",
+    val userState: UserState = UserState.STANDING
 )
+
+enum class UserState {
+    STANDING,
+    WALKING
+}

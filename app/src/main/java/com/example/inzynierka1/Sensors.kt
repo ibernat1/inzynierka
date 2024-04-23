@@ -7,25 +7,19 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.core.content.ContextCompat.getSystemService
 import com.example.inzynierka1.viewmodels.MainViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 private  const val TAG = "SENSORS"
-interface SensorsListener {
-    fun onMessageChanged(message: String)
-}
 
 class Sensors @Inject constructor(@ApplicationContext private val context: Context): SensorEventListener{
     private lateinit var sensorManager: SensorManager
     private var message: String by mutableStateOf("brak danych")
     private val values = mutableListOf<String>()
-//    private var listener: SensorsListener? = null
 
     private var mainViewModel: MainViewModel? = null
 
@@ -33,9 +27,6 @@ class Sensors @Inject constructor(@ApplicationContext private val context: Conte
         this.mainViewModel = mainViewModel
     }
 
-//    fun setListener(listener: SensorsListener) {
-//        this.listener = listener
-//    }
 
     fun setUpSensorStuff() {
         // Create the sensor manager
@@ -57,12 +48,12 @@ class Sensors @Inject constructor(@ApplicationContext private val context: Conte
         // Checks for the sensor we have registered
         if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
 
-            message = "X: ${event.values[0]}, Y: ${event.values[1]}, Z: ${event.values[2]}"
+            message = "${event.values[0]},${event.values[1]},${event.values[2]}"
 //            Log.d(
 //                "Sensors",message
 //            )
             values.add(message)
-            Log.d("Sensors",values.size.toString())
+//            Log.d("Sensors",values.size.toString())
         }
     }
 
