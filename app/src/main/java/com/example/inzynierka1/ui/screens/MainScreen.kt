@@ -63,11 +63,6 @@ fun MainActivityScreen(viewModel: MainViewModel = hiltViewModel()) {
 
         Spacer(modifier = Modifier.weight(1f))
 
-//        SimpleButton({ viewModel.writeSensors() } ,
-//            name = uiState.button,
-//            buttonColor,
-//            buttonText
-//            )
         if (uiState.userState == UserState.STANDING) {
             SimpleButton({ viewModel.writeSensors() } ,
                 name = uiState.button,

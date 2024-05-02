@@ -51,6 +51,18 @@ android {
     }
 }
 
+buildscript {
+    repositories {
+        // Add repositories if needed
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Add Mockito core library to the classpath
+        classpath("org.mockito:mockito-core:3.12.4")
+    }
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -67,6 +79,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation("org.mockito:mockito-core:3.12.4")
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 

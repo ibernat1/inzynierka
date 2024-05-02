@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 private  const val TAG = "SENSORS"
 
-class Sensors @Inject constructor(@ApplicationContext private val context: Context): SensorEventListener{
+class SensorsManager @Inject constructor(@ApplicationContext private val context: Context): SensorEventListener{
     private lateinit var sensorManager: SensorManager
     private var message: String by mutableStateOf("brak danych")
     private val values = mutableListOf<String>()
@@ -45,7 +45,6 @@ class Sensors @Inject constructor(@ApplicationContext private val context: Conte
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-        // Checks for the sensor we have registered
         if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
 
             message = "${event.values[0]},${event.values[1]},${event.values[2]}"
@@ -60,8 +59,6 @@ class Sensors @Inject constructor(@ApplicationContext private val context: Conte
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
         return
     }
-
-
 
     fun getValues(): List<String> {
         Log.d("Sensors", values.toString())
