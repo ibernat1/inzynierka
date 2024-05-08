@@ -5,6 +5,8 @@ plugins {
     id("com.google.dagger.hilt.android")
 }
 
+
+
 android {
     namespace = "com.example.inzynierka1"
     compileSdk = 34
@@ -75,6 +77,9 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     testImplementation(libs.junit)
+    testImplementation ("org.mockito.kotlin:mockito-kotlin:3.2.0")
+    testImplementation("junit:junit:4.12")
+    testImplementation("io.mockk:mockk:1.12.0")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

@@ -67,7 +67,6 @@ class SensorsManager @Inject constructor(@ApplicationContext private val context
 
     fun nullValues(){
         values.clear()
-        values.add("Początek")
     }
 
     fun getValue() : String {

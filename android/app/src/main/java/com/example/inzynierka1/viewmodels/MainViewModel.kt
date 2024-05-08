@@ -76,7 +76,7 @@ class MainViewModel @Inject constructor(
             updateButton("Trwa zbieranie danych")
             updateUserState(UserState.WALKING)
             CoroutineScope(Dispatchers.Default).launch {
-                delay(5000)
+                delay(10000)
                 withContext(Dispatchers.Main) {
                     isCollectingData = false
                     val sensorValues = sensorsManager.getValues()
