@@ -7,7 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.example.inzynierka1.ui.screens.MainActivityScreen
-import com.example.inzynierka1.ui.theme.Inzynierka1Theme
+import com.example.inzynierka1.ui.theme.AppTheme
 import com.example.inzynierka1.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.log
@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity(), SavedStateRegistryOwner {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Inzynierka1Theme {
+            AppTheme {
 //                val viewModel = viewModel<MainViewModel>()
 //                viewModel.onCreate()
                 Navigation()

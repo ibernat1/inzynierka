@@ -76,6 +76,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.ui.text.google.fonts)
     testImplementation(libs.junit)
     testImplementation ("org.mockito.kotlin:mockito-kotlin:3.2.0")
     testImplementation("junit:junit:4.12")
@@ -87,6 +88,8 @@ dependencies {
     androidTestImplementation("org.mockito:mockito-core:3.12.4")
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation("androidx.compose.material3:material3:1.2.1")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
 

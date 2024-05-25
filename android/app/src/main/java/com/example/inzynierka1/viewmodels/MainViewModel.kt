@@ -3,6 +3,8 @@ package com.example.inzynierka1.viewmodels
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.inzynierka1.FileManager
 import com.example.inzynierka1.SensorsManager
@@ -21,7 +23,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+open class MainViewModel @Inject constructor(
     private val sensorsManager: SensorsManager,
     private val fileManager: FileManager
 ) : ViewModel() {
@@ -29,7 +31,9 @@ class MainViewModel @Inject constructor(
     private val TAG = "Main_Activity_ViewModel"
 
     private val _uiState = MutableStateFlow(MainUiState())
-    val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
+    open val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
+
+    open val userName: MutableState<String> = mutableStateOf("")
 
     private fun updateMessage(text: String) {
         _uiState.update { currentState ->
@@ -59,10 +63,12 @@ class MainViewModel @Inject constructor(
     }
 
     private fun onCreate() {
-        sensorsManager.setUpSensorStuff()
+        sensorsManager.setUpSensors()
         sensorsManager.setMainViewModel(this)
         Log.d(TAG, "Utworzono")
     }
+
+    
 
     private var isCollectingData = false
 

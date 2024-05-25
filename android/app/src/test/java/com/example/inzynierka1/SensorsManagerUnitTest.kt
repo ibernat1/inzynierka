@@ -5,7 +5,6 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import androidx.compose.runtime.mutableStateOf
 import com.example.inzynierka1.viewmodels.MainViewModel
 import io.mockk.*
 import org.junit.After
@@ -36,7 +35,7 @@ class SensorsManagerUnitTest {
     fun `test setUpSensorStuff`() {
         val sensorsManager = SensorsManager(context)
         sensorsManager.setMainViewModel(mainViewModel)
-        sensorsManager.setUpSensorStuff()
+        sensorsManager.setUpSensors()
         val mockListener: SensorEventListener = mockk()
 
         verify(exactly = 1) {

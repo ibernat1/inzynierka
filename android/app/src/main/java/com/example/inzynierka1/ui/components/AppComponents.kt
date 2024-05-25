@@ -8,7 +8,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -16,10 +18,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.inzynierka1.ui.theme.poppinsFontFamily
+//import com.example.inzynierka1.ui.theme.poppinsFontFamily
 
 @Composable
-fun SimpleButton(onButtonClick: () -> Unit, name: String, color: Color, textColor: Color){
+fun SimpleButton(
+    onButtonClick: () -> Unit,
+    name: String,
+    color: Color,
+    textColor: Color){
     Button(
         modifier = Modifier
             .fillMaxWidth()
@@ -37,7 +43,7 @@ fun SimpleButton(onButtonClick: () -> Unit, name: String, color: Color, textColo
                 .fillMaxWidth()
                 .padding(8.dp),
             text = name,
-            fontFamily = poppinsFontFamily,
+//            fontFamily = poppinsFontFamily,
             fontWeight = FontWeight.Medium,
             fontSize = 27.sp,
             lineHeight = 30.sp,
@@ -52,15 +58,30 @@ fun DisplayInfo(name: String,
                 fontSize: TextUnit = 20.sp,
                 lineHeight: TextUnit = 24.sp,
                 fontWeight: FontWeight = FontWeight.Medium,
-                color: Color = Color(0xFF000000)) {
+                color: Color = Color(0xFF000000)
+) {
     Text(
         modifier = Modifier.padding(start = 20.dp, top = 30.dp, end = 20.dp, bottom = 0.dp),
         text = name,
         color = color,
         fontSize = fontSize,
         lineHeight = lineHeight,
-        fontFamily = poppinsFontFamily,
+//        fontFamily = poppinsFontFamily,
         fontWeight = fontWeight,
         textAlign = TextAlign.Center
     )
 }
+
+
+@Composable
+fun TextInput(input: MutableState<String>, label: String){
+    TextField(
+        value = input.value,
+        onValueChange = { newValue ->
+            input.value = newValue
+        },
+        label = {
+            Text (label)
+    })
+}
+

@@ -28,7 +28,7 @@ class SensorsManager @Inject constructor(@ApplicationContext private val context
     }
 
 
-    fun setUpSensorStuff() {
+    open fun setUpSensors() {
         // Create the sensor manager
         sensorManager = context.getSystemService(SENSOR_SERVICE) as SensorManager
         Log.d(TAG, "obtained sensorManager")
