@@ -3,10 +3,16 @@ package com.example.inzynierka1.viewmodels
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.inzynierka1.FileManager
+import com.example.inzynierka1.FileWriter
 import com.example.inzynierka1.SensorsManager
 import com.example.inzynierka1.uiState.MainUiState
 import com.example.inzynierka1.uiState.UserState
@@ -25,31 +31,22 @@ import javax.inject.Inject
 @HiltViewModel
 open class MainViewModel @Inject constructor(
     private val sensorsManager: SensorsManager,
-    private val fileManager: FileManager
+    private val fileManager: FileManager,
+    private val fileWriter: FileWriter
 ) : ViewModel() {
 
     private val TAG = "Main_Activity_ViewModel"
 
     private val _uiState = MutableStateFlow(MainUiState())
-    open val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
 
-    open val userName: MutableState<String> = mutableStateOf("")
+    val userName: MutableState<String> = mutableStateOf("")
+    val collectingTimeString: MutableState<String> = mutableStateOf("")
+    var isInputValid: MutableState<Boolean> =  mutableStateOf(false)
 
-    private fun updateMessage(text: String) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                message = text
-            )
-        }
-    }
+    private var collectingTime: Long = 10000
+    val progress: MutableState<Float> = mutableFloatStateOf(0F)
 
-    private fun updateButton(text: String) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                button = text
-            )
-        }
-    }
 
     private fun updateUserState(userState: UserState){
         _uiState.update { currentState ->
@@ -78,23 +75,22 @@ open class MainViewModel @Inject constructor(
             isCollectingData = true
             sensorsManager.nullValues()
             Log.d(TAG, "Rozpoczęto zbieranie danych")
-            updateMessage("Trwa zbieranie danych")
-            updateButton("Trwa zbieranie danych")
+            collectingTime = collectingTimeString.value.toLong() * 1000
             updateUserState(UserState.WALKING)
             CoroutineScope(Dispatchers.Default).launch {
-                delay(10000)
+//                delay(collectingTime)
+                repeat(100) { // repeat 100 times to make 5 seconds
+                    delay(collectingTime / 100)
+                    progress.value += 0.01f
+                }
                 withContext(Dispatchers.Main) {
                     isCollectingData = false
                     val sensorValues = sensorsManager.getValues()
                     Log.d(TAG, "Zakończono zbieranie danych")
-                    updateMessage("Zakończono zbieranie danych")
-                    updateButton("Rozpocznij ponownie")
-                    updateUserState(UserState.STANDING)
-                        fileManager.write(sensorValues)
+                    updateUserState(UserState.COLLECTED_DATA)
+                    fileWriter.writeToFile(fileManager.createFile(userName.value),sensorValues)
                 }
             }
-        } else {
-            updateMessage("Dane są zbierane")
         }
     }
 }

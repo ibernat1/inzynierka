@@ -8,20 +8,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.inzynierka1.R
 import com.example.inzynierka1.ui.components.SimpleButton
 import com.example.inzynierka1.ui.components.DisplayInfo
@@ -45,13 +43,34 @@ fun MainActivityScreen(viewModel: MainViewModel) {
             .background(color = backgroundColor),
         verticalArrangement = Arrangement.SpaceBetween
     ){
-        DisplayInfo(
-            uiState.message,
-            fontSize = 35.sp,
-            lineHeight = 40.sp,
-            fontWeight = FontWeight.Medium,
-            color = textColor
-        )
+        if (uiState.userState == UserState.STANDING){
+            DisplayInfo(
+                stringResource(id = R.string.standing_msg),
+                fontSize = 35.sp,
+                lineHeight = 40.sp,
+                fontWeight = FontWeight.Medium,
+                color = textColor
+            )
+        }
+        else if (uiState.userState == UserState.WALKING){
+            DisplayInfo(
+                stringResource(id = R.string.collecting_data_msg),
+                fontSize = 35.sp,
+                lineHeight = 40.sp,
+                fontWeight = FontWeight.Medium,
+                color = textColor
+            )
+        }
+        else {
+            DisplayInfo(
+                stringResource(id = R.string.collected_data_msg),
+                fontSize = 35.sp,
+                lineHeight = 40.sp,
+                fontWeight = FontWeight.Medium,
+                color = textColor
+            )
+        }
+
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -59,10 +78,10 @@ fun MainActivityScreen(viewModel: MainViewModel) {
             modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
-            val imageResource = if (uiState.userState == UserState.STANDING) {
-                painterResource(R.drawable.standing)
-            } else {
+            val imageResource = if (uiState.userState == UserState.WALKING) {
                 painterResource(R.drawable.walking)
+            } else {
+                painterResource(R.drawable.standing)
             }
             Image(
                 painter = imageResource,
@@ -75,13 +94,23 @@ fun MainActivityScreen(viewModel: MainViewModel) {
 
         if (uiState.userState == UserState.STANDING) {
             SimpleButton({ viewModel.writeSensors() } ,
-                name = uiState.button,
+                name = stringResource(id = R.string.standing_button),
+                buttonColor,
+                buttonText
+            )
+        }
+        else if (uiState.userState == UserState.COLLECTED_DATA){
+            SimpleButton({ viewModel.writeSensors() } ,
+                name = stringResource(id = R.string.collected_data_button),
                 buttonColor,
                 buttonText
             )
         }
         else {
-            Spacer(modifier = Modifier.weight(1f))
+            LinearProgressIndicator(
+                progress = { viewModel.progress.value },
+                modifier = Modifier.fillMaxWidth(),
+            )
         }
     }
 }

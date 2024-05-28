@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="backgroundColor">#FFE6CADE</color>
-    <color name="buttonColor">#FF8A1E69</color>
-    <color name="buttonText">#FFE6CADE</color>
-    <color name="textColor">#FF690049</color>
+
 </resources>

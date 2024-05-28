@@ -1,33 +1,40 @@
 package com.example.inzynierka1.ui.screens
 
+import android.provider.Settings.Global.getString
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.inzynierka1.R
 import com.example.inzynierka1.ui.components.DisplayInfo
+import com.example.inzynierka1.ui.components.NumberInput
 import com.example.inzynierka1.ui.components.SimpleButton
 import com.example.inzynierka1.ui.components.TextInput
 import com.example.inzynierka1.viewmodels.MainViewModel
 
 @Composable
 fun PreferencesScreen(navHostController: NavHostController, viewModel: MainViewModel) {
+    val context = LocalContext.current
+//    var showToast = false
+    var showToast by remember { mutableStateOf(false) }
 
     val backgroundColor = MaterialTheme.colorScheme.surfaceDim
     val buttonColor = MaterialTheme.colorScheme.primary
@@ -37,13 +44,12 @@ fun PreferencesScreen(navHostController: NavHostController, viewModel: MainViewM
     Column(
         modifier = Modifier
             .fillMaxSize()
-//            .padding(horizontal = 50.dp)
             .background(color = backgroundColor),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         DisplayInfo(
-            name = "Aby przejść dalej podaj swoje imię",
+            name = stringResource(id = R.string.preferences_msg),
             fontSize = 35.sp,
             lineHeight = 40.sp,
             fontWeight = FontWeight.Medium,
@@ -52,13 +58,27 @@ fun PreferencesScreen(navHostController: NavHostController, viewModel: MainViewM
         Spacer(modifier = Modifier.weight(1f))
         TextInput(
             input = viewModel.userName,
-            label = "Imię")
+            label = stringResource(id = R.string.name))
+        Spacer(modifier = Modifier.weight(0.1f))
+        NumberInput(
+            input = viewModel.collectingTimeString,
+            label = stringResource(id = R.string.time))
         Spacer(modifier = Modifier.weight(1f))
         SimpleButton(
-            { navHostController.navigate("Main") },
-            name = "Dalej",
+            onButtonClick = {
+                if (viewModel.userName.value.isNotEmpty() and viewModel.collectingTimeString.value.isNotEmpty()) {
+                    navHostController.navigate("Main")
+                } else {
+                    showToast =true
+                }
+            },
+            name = stringResource(id = R.string.next),
             color = buttonColor,
             textColor = buttonText)
+        if (showToast){
+            Toast.makeText(context, stringResource(id = R.string.formToast), Toast.LENGTH_SHORT).show()
+            showToast = false
+        }
     }
 }
 

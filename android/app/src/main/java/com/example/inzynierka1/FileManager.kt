@@ -14,34 +14,26 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
-class FileManager @Inject constructor(@ApplicationContext private val context: Context) {
+class FileManager @Inject constructor(@ApplicationContext private val context: Context){
     val TAG = "FILE MANAGER"
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getName(): String {
+    fun getName(name: String): String {
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
         val formatted = current.format(formatter)
-        return "$formatted.txt"
+        return "$name$formatted.txt"
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun write(values: List<String>) {
+    fun createFile(name: String): File {
         val directory =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-        val name = getName()
+        val name = getName(name)
         Log.d(TAG, name)
         val file = File(directory, name)
         file.createNewFile()
-
-        // Write values to the file
-        file.printWriter().use { out ->
-            values.forEach { value ->
-                out.println(value)
-            }
-        }
-
-        Log.d(TAG, "Zapisano plik")
+        return file
     }
 
 }
