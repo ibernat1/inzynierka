@@ -77,19 +77,31 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.ui.text.google.fonts)
+
+
     testImplementation(libs.junit)
     testImplementation ("org.mockito.kotlin:mockito-kotlin:3.2.0")
     testImplementation("junit:junit:4.12")
     testImplementation("io.mockk:mockk:1.12.0")
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation("org.mockito:mockito-core:3.12.4")
+    androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.0.5")
+    androidTestImplementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.40.5")
+    kaptAndroidTest("com.google.dagger:hilt-compiler:2.40.5")
+
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation("androidx.compose.material3:material3:1.2.1")
+
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
 

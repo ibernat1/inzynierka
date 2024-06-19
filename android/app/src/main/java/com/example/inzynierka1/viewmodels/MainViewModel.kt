@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModel
 import com.example.inzynierka1.FileManager
 import com.example.inzynierka1.FileWriter
 import com.example.inzynierka1.SensorsManager
+import com.example.inzynierka1.UserPreferencesRepository
 import com.example.inzynierka1.uiState.MainUiState
 import com.example.inzynierka1.uiState.UserState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,7 +33,8 @@ import javax.inject.Inject
 open class MainViewModel @Inject constructor(
     private val sensorsManager: SensorsManager,
     private val fileManager: FileManager,
-    private val fileWriter: FileWriter
+    private val fileWriter: FileWriter,
+    private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
 
     private val TAG = "Main_Activity_ViewModel"
@@ -54,6 +56,7 @@ open class MainViewModel @Inject constructor(
         }
     }
 
+
     init {
         _uiState.value = MainUiState()
         onCreate()
@@ -65,7 +68,10 @@ open class MainViewModel @Inject constructor(
         Log.d(TAG, "Utworzono")
     }
 
-    
+    suspend fun savePreferences(){
+        userPreferencesRepository.updateUserName(userName.toString())
+        userPreferencesRepository.updateCollectingTime(collectingTimeString.toString())
+    }
 
     private var isCollectingData = false
 

@@ -67,6 +67,7 @@ fun PreferencesScreen(navHostController: NavHostController, viewModel: MainViewM
         SimpleButton(
             onButtonClick = {
                 if (viewModel.userName.value.isNotEmpty() and viewModel.collectingTimeString.value.isNotEmpty()) {
+                    viewModel.savePreferences()
                     navHostController.navigate("Main")
                 } else {
                     showToast =true
