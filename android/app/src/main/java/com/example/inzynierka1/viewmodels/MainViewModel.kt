@@ -11,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.inzynierka1.FileManager
 import com.example.inzynierka1.FileWriter
 import com.example.inzynierka1.SensorsManager
@@ -44,13 +45,13 @@ open class MainViewModel @Inject constructor(
 
     val userName: MutableState<String> = mutableStateOf("")
     val collectingTimeString: MutableState<String> = mutableStateOf("")
-    var isInputValid: MutableState<Boolean> =  mutableStateOf(false)
+    var isInputValid: MutableState<Boolean> = mutableStateOf(false)
 
     private var collectingTime: Long = 10000
     val progress: MutableState<Float> = mutableFloatStateOf(0F)
 
 
-    private fun updateUserState(userState: UserState){
+    private fun updateUserState(userState: UserState) {
         _uiState.update { currentState ->
             currentState.copy(userState = userState)
         }
@@ -68,9 +69,13 @@ open class MainViewModel @Inject constructor(
         Log.d(TAG, "Utworzono")
     }
 
-    suspend fun savePreferences(){
-        userPreferencesRepository.updateUserName(userName.toString())
-        userPreferencesRepository.updateCollectingTime(collectingTimeString.toString())
+    fun savePreferences() {
+
+        viewModelScope.launch {
+            userPreferencesRepository.updateUserName(userName.toString())
+            userPreferencesRepository.updateCollectingTime(collectingTimeString.toString())
+        }
+
     }
 
     private var isCollectingData = false
@@ -94,7 +99,7 @@ open class MainViewModel @Inject constructor(
                     val sensorValues = sensorsManager.getValues()
                     Log.d(TAG, "Zakończono zbieranie danych")
                     updateUserState(UserState.COLLECTED_DATA)
-                    fileWriter.writeToFile(fileManager.createFile(userName.value),sensorValues)
+                    fileWriter.writeToFile(fileManager.createFile(userName.value), sensorValues)
                 }
             }
         }
