@@ -4,7 +4,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.inzynierka1.ui.screens.MainActivityScreen
+import com.example.inzynierka1.ui.screens.CollectScreen
 import com.example.inzynierka1.viewmodels.MainViewModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -26,7 +26,7 @@ class MainActivityScreenTest {
     fun buttonDisappearsAfterClick() {
         val viewModel = MainViewModel() // Assuming you have a way to create your ViewModel
         composeTestRule.setContent {
-            MainActivityScreen(viewModel = viewModel)
+            CollectScreen(viewModel = viewModel)
         }
 
         // Initial state should have the button

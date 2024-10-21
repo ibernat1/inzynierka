@@ -1,14 +1,20 @@
 <resources>
     <string name="app_name">inzynierka1</string>
+    <string name="preferences">preferencje</string>
+    <string name="collect_data">zbieranie danych</string>
+    <string name="menu_msg">MENU</string>
+    <string name="test">test</string>
     <string name="preferences_msg">Aby przejść dalej wypełnij formluarz</string>
     <string name="name">imię</string>
     <string name="time">czas zbierania próbek (sekundy)</string>
-    <string name="next">Dalej</string>
+    <string name="save">Zapisz</string>
     <string name="formToast">Wypełnij wszystkie pola</string>
+    <string name="numberToast">Czas musi być większy od zera</string>
     <string name="standing_button">Rozpocznij</string>
     <string name="standing_msg">Aby rozpocząć kliknij przycisk na dole ekranu</string>
     <string name="collecting_data_button">Trwa zbieranie danych</string>
     <string name="collecting_data_msg">Trwa zbieranie danych</string>
     <string name="collected_data_button">Rozpocznij ponownie</string>
     <string name="collected_data_msg">Zakończono zbieranie danych</string>
+    <string name="collectToast">Najpierw zapisz ustawienia</string>
 </resources>

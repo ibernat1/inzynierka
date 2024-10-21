@@ -34,7 +34,8 @@ import com.example.inzynierka1.viewmodels.MainViewModel
 fun PreferencesScreen(navHostController: NavHostController, viewModel: MainViewModel) {
     val context = LocalContext.current
 //    var showToast = false
-    var showToast by remember { mutableStateOf(false) }
+    var wrongNumber by remember { mutableStateOf(false) }
+    var noData by remember { mutableStateOf(false) }
 
     val backgroundColor = MaterialTheme.colorScheme.surfaceDim
     val buttonColor = MaterialTheme.colorScheme.primary
@@ -66,19 +67,35 @@ fun PreferencesScreen(navHostController: NavHostController, viewModel: MainViewM
         Spacer(modifier = Modifier.weight(1f))
         SimpleButton(
             onButtonClick = {
-                if (viewModel.userName.value.isNotEmpty() and viewModel.collectingTimeString.value.isNotEmpty()) {
-                    viewModel.savePreferences()
-                    navHostController.navigate("Main")
-                } else {
-                    showToast =true
+                if(viewModel.userName.value.isNotEmpty() and viewModel.collectingTimeString.value.isNotEmpty()){
+                    if (viewModel.isTimeValid()){
+                        viewModel.savePreferences()
+                        navHostController.navigate("Menu")
+                    }
+                    else {
+                        wrongNumber = true
+                    }
                 }
+                else{
+                    noData = true
+                }
+//                if (viewModel.userName.value.isNotEmpty() and viewModel.collectingTimeString.value.isNotEmpty()) {
+//                    viewModel.savePreferences()
+//                    navHostController.navigate("Menu")
+//                } else {
+//                    showToast =true
+//                }
             },
-            name = stringResource(id = R.string.next),
+            name = stringResource(id = R.string.save),
             color = buttonColor,
             textColor = buttonText)
-        if (showToast){
+        if (wrongNumber){
             Toast.makeText(context, stringResource(id = R.string.formToast), Toast.LENGTH_SHORT).show()
-            showToast = false
+            wrongNumber = false
+        }
+        if (noData){
+            Toast.makeText(context, stringResource(id = R.string.formToast), Toast.LENGTH_SHORT).show()
+            noData = false
         }
     }
 }
