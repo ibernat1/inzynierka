@@ -47,8 +47,10 @@ open class MainViewModel @Inject constructor(
     val collectingTimeString: MutableState<String> = mutableStateOf("")
     var isInputValid: MutableState<Boolean> = mutableStateOf(false)
 
-    private var collectingTime: Long = 10000
+    var collectingTime: Long = 0 //10000
     val progress: MutableState<Float> = mutableFloatStateOf(0F)
+
+    private var isCollectingData = false
 
 
     private fun updateUserState(userState: UserState) {
@@ -78,7 +80,9 @@ open class MainViewModel @Inject constructor(
 
     }
 
-    private var isCollectingData = false
+    fun isTimeValid(): Boolean {
+        return collectingTimeString.value.toLong() * 1000 > 0
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun writeSensors() {
