@@ -102,7 +102,7 @@ fun CollectScreen(viewModel: MainViewModel) {
 
         if (uiState.userState == UserState.STANDING) {
             SimpleButton({
-                            if (viewModel.collectingTime.toInt() == 0) { showToast = true }
+                            if (viewModel.collectingTimeString.value.isEmpty()) { showToast = true }
                             else {viewModel.writeSensors()}
                          } ,
                 name = stringResource(id = R.string.standing_button),
