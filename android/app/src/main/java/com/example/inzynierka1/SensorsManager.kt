@@ -19,7 +19,9 @@ private  const val TAG = "SENSORS"
 class SensorsManager @Inject constructor(@ApplicationContext private val context: Context): SensorEventListener{
     private lateinit var sensorManager: SensorManager
     private var message: String by mutableStateOf("brak danych")
+    private val reading = mutableListOf<Float>()
     private val values = mutableListOf<String>()
+    private val valuesFloat = mutableListOf<List<Float>>()
 
     private var mainViewModel: MainViewModel? = null
 
@@ -28,7 +30,7 @@ class SensorsManager @Inject constructor(@ApplicationContext private val context
     }
 
 
-    fun setUpSensorStuff() {
+    open fun setUpSensors() {
         // Create the sensor manager
         sensorManager = context.getSystemService(SENSOR_SERVICE) as SensorManager
         Log.d(TAG, "obtained sensorManager")
@@ -37,8 +39,9 @@ class SensorsManager @Inject constructor(@ApplicationContext private val context
             sensorManager.registerListener(
                 this,
                 accelerometer,
-                SensorManager.SENSOR_DELAY_FASTEST
+//                SensorManager.SENSOR_DELAY_FASTEST
 //                SensorManager.SENSOR_DELAY_NORMAL
+                SensorManager.SENSOR_DELAY_GAME
             )
         }
         Log.d(TAG, "regsitered the listener")
@@ -48,10 +51,16 @@ class SensorsManager @Inject constructor(@ApplicationContext private val context
         if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
 
             message = "${event.values[0]},${event.values[1]},${event.values[2]}"
-//            Log.d(
-//                "Sensors",message
-//            )
+
+            reading.clear()
+            reading.add(event.values[0])
+            reading.add(event.values[1])
+            reading.add(event.values[2])
+
+//            Log.d(TAG,reading.toString())
+
             values.add(message)
+            valuesFloat.add(reading)
 //            Log.d("Sensors",values.size.toString())
         }
     }

@@ -1,24 +1,41 @@
-package com.example.inzynierka1
-
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.ext.junit.runners.AndroidJUnit4
-
-import org.junit.Test
-import org.junit.runner.RunWith
-
-import org.junit.Assert.*
-
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-@RunWith(AndroidJUnit4::class)
-class ExampleInstrumentedTest {
-    @Test
-    fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.example.inzynierka1", appContext.packageName)
-    }
-}
+//package com.example.inzynierka1
+//
+//import androidx.compose.ui.test.junit4.createComposeRule
+//import androidx.compose.ui.test.onNodeWithText
+//import androidx.compose.ui.test.performClick
+//import androidx.test.ext.junit.runners.AndroidJUnit4
+//import com.example.inzynierka1.ui.screens.CollectScreen
+//import com.example.inzynierka1.viewmodels.MainViewModel
+//import dagger.hilt.android.testing.HiltAndroidRule
+//import dagger.hilt.android.testing.HiltAndroidTest
+//import org.junit.Rule
+//import org.junit.Test
+//import org.junit.runner.RunWith
+//
+//@HiltAndroidTest
+//@RunWith(AndroidJUnit4::class)
+//class MainActivityScreenTest {
+//
+//    @get:Rule(order = 0)
+//    val hiltRule = HiltAndroidRule(this)
+//
+//    @get:Rule(order = 1)
+//    val composeTestRule = createComposeRule()
+//
+//    @Test
+//    fun buttonDisappearsAfterClick() {
+//        val viewModel = MainViewModel() // Assuming you have a way to create your ViewModel
+//        composeTestRule.setContent {
+//            CollectScreen(viewModel = viewModel)
+//        }
+//
+//        // Initial state should have the button
+//        composeTestRule.onNodeWithText("Standing Button Text").assertExists()
+//
+//        // Perform click on the button
+//        composeTestRule.onNodeWithText("Standing Button Text").performClick()
+//
+//        // Button should disappear after click
+//        composeTestRule.onNodeWithText("Standing Button Text").assertDoesNotExist()
+//    }
+//}

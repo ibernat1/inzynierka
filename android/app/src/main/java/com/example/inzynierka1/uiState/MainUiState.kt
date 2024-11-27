@@ -8,5 +8,6 @@ data class MainUiState (
 
 enum class UserState {
     STANDING,
-    WALKING
+    WALKING,
+    COLLECTED_DATA
 }
