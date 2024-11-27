@@ -12,7 +12,7 @@ import javax.inject.Inject
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class FileManager @Inject constructor(@ApplicationContext private val context: Context){
+class FileManager @Inject constructor(@ApplicationContext private val context: Context) {
     val TAG = "FILE MANAGER"
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -36,11 +36,15 @@ class FileManager @Inject constructor(@ApplicationContext private val context: C
     fun createFile(name: String): File {
         val directory =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-        val name = getFileName(name)
         Log.d(TAG, name)
         val file = File(directory, name)
         file.createNewFile()
         return file
     }
 
+    fun getFile(name: String): File {
+        val directory =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        return File(directory, name)
+    }
 }

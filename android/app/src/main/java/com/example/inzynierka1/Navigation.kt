@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.inzynierka1.ui.screens.CollectScreen
 import com.example.inzynierka1.ui.screens.MenuScreen
+import com.example.inzynierka1.ui.screens.ModelScreen
 import com.example.inzynierka1.ui.screens.PreferencesScreen
 import com.example.inzynierka1.viewmodels.MainViewModel
 
@@ -25,6 +26,9 @@ fun Navigation() {
         }
         composable("Collect"){
             CollectScreen(viewModel)
+        }
+        composable("Model"){
+            ModelScreen(viewModel)
         }
     }
 

@@ -83,6 +83,7 @@ fun TextInput(input: MutableState<String>, label: String){
     TextField(
         modifier = Modifier.width(310.dp),
         value = input.value,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         onValueChange = { newValue ->
             input.value = newValue
         },

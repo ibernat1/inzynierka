@@ -13,7 +13,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.inzynierka1.FileManager
+import com.example.inzynierka1.FileReader
 import com.example.inzynierka1.FileWriter
+import com.example.inzynierka1.ModelManager
 import com.example.inzynierka1.SensorsManager
 import com.example.inzynierka1.UserPreferencesRepository
 import com.example.inzynierka1.uiState.MainUiState
@@ -28,6 +30,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,6 +38,8 @@ open class MainViewModel @Inject constructor(
     private val sensorsManager: SensorsManager,
     private val fileManager: FileManager,
     private val fileWriter: FileWriter,
+    private val fileReader: FileReader,
+    private val modelManager: ModelManager,
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
 
@@ -51,6 +56,10 @@ open class MainViewModel @Inject constructor(
     val progress: MutableState<Float> = mutableFloatStateOf(0F)
 
     private var isCollectingData = false
+
+    private var fileName: String = ""
+
+    val inferenceScore: MutableState<Float> = mutableFloatStateOf(0F)
 
 
     private fun updateUserState(userState: UserState) {
@@ -84,10 +93,24 @@ open class MainViewModel @Inject constructor(
         return collectingTimeString.value.toLong() * 1000 > 0
     }
 
+    fun getDataFromFile(): List<List<Float>>{
+//        val file = fileManager.getFile(fileName)
+        val file = fileManager.getFile("iga20241127174532.txt")
+        val content =  fileReader.readFromFile(file)
+        Log.d(TAG, content.toString())
+        return content
+    }
+
+    fun getInputShape()
+    {
+        inferenceScore.value = modelManager.simpleInference(getDataFromFile())
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun writeSensors() {
         if (!isCollectingData) {
             isCollectingData = true
+            progress.value = 0F
             sensorsManager.nullValues()
             Log.d(TAG, "Rozpoczęto zbieranie danych")
             collectingTime = collectingTimeString.value.toLong() * 1000
@@ -103,7 +126,8 @@ open class MainViewModel @Inject constructor(
                     val sensorValues = sensorsManager.getValues()
                     Log.d(TAG, "Zakończono zbieranie danych")
                     updateUserState(UserState.COLLECTED_DATA)
-                    fileWriter.writeToFile(fileManager.createFile(userName.value), sensorValues)
+                    fileName = fileManager.getFileName(userName.value)
+                    fileWriter.writeToFile(fileManager.createFile(fileName), sensorValues)
                 }
             }
         }

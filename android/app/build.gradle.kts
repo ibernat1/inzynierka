@@ -11,6 +11,10 @@ android {
     namespace = "com.example.inzynierka1"
     compileSdk = 34
 
+    androidResources {
+        noCompress += "tflite"
+    }
+
     defaultConfig {
         applicationId = "com.example.inzynierka1"
         minSdk = 24
@@ -44,13 +48,15 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.11"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+
 }
 
 buildscript {
@@ -78,6 +84,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.androidx.datastore.preferences.core.jvm)
+//    implementation(libs.litert)
+    implementation(libs.firebase.firestore.ktx)
 
 
     testImplementation(libs.junit)
@@ -114,6 +122,10 @@ dependencies {
     implementation ("androidx.navigation:navigation-compose:2.5.3")
 
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+
+    implementation (libs.tensorflow.lite)
+    implementation (libs.tensorflow.lite.support)
+    implementation(libs.tensorflow.lite.gpu)
 }
 
 // Allow references to generated code

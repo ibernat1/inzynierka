@@ -24,7 +24,7 @@ import com.example.inzynierka1.ui.components.SimpleButton
 import com.example.inzynierka1.viewmodels.MainViewModel
 
 @Composable
-fun MenuScreen(navHostController: NavHostController, viewModel: MainViewModel){
+fun ModelScreen(viewModel: MainViewModel){
     val context = LocalContext.current
 
     val backgroundColor = MaterialTheme.colorScheme.surfaceDim
@@ -32,7 +32,6 @@ fun MenuScreen(navHostController: NavHostController, viewModel: MainViewModel){
     val buttonText = MaterialTheme.colorScheme.onPrimary
     val textColor = MaterialTheme.colorScheme.onSurface
 
-    val imageResource = painterResource(R.drawable.walking)
 
     Column(
         modifier = Modifier
@@ -41,55 +40,28 @@ fun MenuScreen(navHostController: NavHostController, viewModel: MainViewModel){
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Image(
-                painter = imageResource,
-                contentDescription = "App Image",
-                modifier = Modifier.size(100.dp)
-            )
-            DisplayInfo(
-                stringResource(id = R.string.menu_msg),
-                fontSize = 45.sp,
-                lineHeight = 50.sp,
-                fontWeight = FontWeight.Medium,
-                color = textColor
-            )
-            Image(
-                painter = imageResource,
-                contentDescription = "App Image",
-                modifier = Modifier.size(100.dp)
-            )
-        }
+
         SimpleButton(
             onButtonClick = {
-                navHostController.navigate("Preferences")
+                viewModel.getDataFromFile()
             },
-            name = stringResource(id = R.string.preferences),
+            name = "Pobierz dane",
             color = buttonColor,
             textColor = buttonText)
         SimpleButton(
             onButtonClick = {
-                navHostController.navigate("Collect")
+                viewModel.getInputShape()
             },
-            name = stringResource(id = R.string.collect_data),
+            name = "Inference",
             color = buttonColor,
             textColor = buttonText)
-        SimpleButton(
-            onButtonClick = {
-                navHostController.navigate("Collect")
-            },
-            name = stringResource(id = R.string.test),
-            color = buttonColor,
-            textColor = buttonText)
-        SimpleButton(
-            onButtonClick = {
-                navHostController.navigate("Model")
-            },
-            name = "Model",
-            color = buttonColor,
-            textColor = buttonText)
+        DisplayInfo(
+            viewModel.inferenceScore.value.toString(),
+            fontSize = 35.sp,
+            lineHeight = 40.sp,
+            fontWeight = FontWeight.Medium,
+            color = textColor
+        )
     }
+
 }

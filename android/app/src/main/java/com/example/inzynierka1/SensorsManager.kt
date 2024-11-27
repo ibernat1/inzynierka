@@ -39,8 +39,9 @@ class SensorsManager @Inject constructor(@ApplicationContext private val context
             sensorManager.registerListener(
                 this,
                 accelerometer,
-                SensorManager.SENSOR_DELAY_FASTEST
+//                SensorManager.SENSOR_DELAY_FASTEST
 //                SensorManager.SENSOR_DELAY_NORMAL
+                SensorManager.SENSOR_DELAY_GAME
             )
         }
         Log.d(TAG, "regsitered the listener")
