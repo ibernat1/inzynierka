@@ -87,6 +87,8 @@ dependencies {
 //    implementation(libs.litert)
     implementation(libs.firebase.firestore.ktx)
 
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+
 
     testImplementation(libs.junit)
     testImplementation ("org.mockito.kotlin:mockito-kotlin:3.2.0")

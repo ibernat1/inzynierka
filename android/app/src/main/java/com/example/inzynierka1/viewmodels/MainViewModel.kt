@@ -1,5 +1,6 @@
 package com.example.inzynierka1.viewmodels
 
+import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -15,12 +16,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.inzynierka1.FileManager
 import com.example.inzynierka1.FileReader
 import com.example.inzynierka1.FileWriter
+import com.example.inzynierka1.HttpClient
 import com.example.inzynierka1.ModelManager
 import com.example.inzynierka1.SensorsManager
 import com.example.inzynierka1.UserPreferencesRepository
 import com.example.inzynierka1.uiState.MainUiState
 import com.example.inzynierka1.uiState.UserState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -40,6 +43,7 @@ open class MainViewModel @Inject constructor(
     private val fileWriter: FileWriter,
     private val fileReader: FileReader,
     private val modelManager: ModelManager,
+    private val httpClient: HttpClient,
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
 
@@ -104,6 +108,12 @@ open class MainViewModel @Inject constructor(
     fun getInputShape()
     {
         inferenceScore.value = modelManager.simpleInference(getDataFromFile())
+    }
+
+    fun getModel(){
+        viewModelScope.launch {
+            httpClient.downloadTFLiteModel("http://192.168.100.102:5000/download-model","modelh.tflie")
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

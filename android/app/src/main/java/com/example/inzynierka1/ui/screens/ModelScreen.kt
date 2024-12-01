@@ -57,11 +57,18 @@ fun ModelScreen(viewModel: MainViewModel){
             textColor = buttonText)
         DisplayInfo(
             viewModel.inferenceScore.value.toString(),
-            fontSize = 35.sp,
-            lineHeight = 40.sp,
+            fontSize = 25.sp,
+            lineHeight = 30.sp,
             fontWeight = FontWeight.Medium,
             color = textColor
         )
+        SimpleButton(
+            onButtonClick = {
+                viewModel.getModel()
+            },
+            name = "pobierz",
+            color = buttonColor,
+            textColor = buttonText)
     }
 
 }
