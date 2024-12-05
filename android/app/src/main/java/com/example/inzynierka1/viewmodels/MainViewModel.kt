@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.jetbrains.annotations.TestOnly
 import java.io.File
 import javax.inject.Inject
 
@@ -88,6 +89,11 @@ open class MainViewModel @Inject constructor(
             userPreferencesRepository.updateUserName(userName.toString())
             userPreferencesRepository.updateCollectingTime(collectingTimeString.toString())
         }
+    }
+
+    @TestOnly
+    fun setCollectingTimeString(value: String) {
+        collectingTimeString.value = value
     }
 
     fun isTimeValid(): Boolean {
