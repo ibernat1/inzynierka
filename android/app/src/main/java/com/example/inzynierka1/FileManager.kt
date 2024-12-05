@@ -23,15 +23,6 @@ class FileManager @Inject constructor(@ApplicationContext private val context: C
         return "$name$formatted.txt"
     }
 
-//    companion object {
-//        fun getFileName(name: String): String {
-//            val current = LocalDateTime.now()
-//            val formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
-//            val formatted = current.format(formatter)
-//            return "$name$formatted.txt"
-//        }
-//    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     fun createFile(name: String): File {
         val directory =

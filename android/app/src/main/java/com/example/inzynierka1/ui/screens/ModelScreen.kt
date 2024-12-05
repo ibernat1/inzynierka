@@ -50,9 +50,9 @@ fun ModelScreen(viewModel: MainViewModel){
             textColor = buttonText)
         SimpleButton(
             onButtonClick = {
-                viewModel.getInputShape()
+                viewModel.uploadDataToServer()
             },
-            name = "Inference",
+            name = "Wyslij dane",
             color = buttonColor,
             textColor = buttonText)
         DisplayInfo(
@@ -66,7 +66,7 @@ fun ModelScreen(viewModel: MainViewModel){
             onButtonClick = {
                 viewModel.getModel()
             },
-            name = "pobierz",
+            name = "pobierz model",
             color = buttonColor,
             textColor = buttonText)
     }

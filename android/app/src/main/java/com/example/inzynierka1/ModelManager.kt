@@ -1,18 +1,16 @@
 package com.example.inzynierka1
 
 import android.content.Context
-import android.content.res.AssetManager
 import android.util.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.tensorflow.lite.Interpreter
+import org.tensorflow.lite.support.common.FileUtil
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
+import java.io.File
 import java.io.FileInputStream
-import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.channels.FileChannel
 import javax.inject.Inject
-import org.tensorflow.lite.support.common.FileUtil
-import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
-import kotlin.random.Random
 
 
 class ModelManager@Inject constructor(@ApplicationContext private val context: Context) {
@@ -28,7 +26,8 @@ class ModelManager@Inject constructor(@ApplicationContext private val context: C
     }
 
     fun simpleInference(data: List<List<Float>>): Float{
-        val interpreter = Interpreter(FileUtil.loadMappedFile(context, TFLITE_MODEL_NAME))
+//        val interpreter = Interpreter(FileUtil.loadMappedFile(context, TFLITE_MODEL_NAME))
+        val interpreter = getInterpreter(context, "modelh.tflite")
         val inputTensor = interpreter.getInputTensor(0)
         val outputTensor = interpreter.getOutputTensor(0)
 
@@ -59,7 +58,19 @@ class ModelManager@Inject constructor(@ApplicationContext private val context: C
         return outputData[0]
     }
 
+    fun loadModelFile(context: Context, modelPath: String): ByteBuffer {
+        val file = File(context.filesDir, modelPath)
+        val fileInputStream = FileInputStream(file)
+        val fileChannel = fileInputStream.channel
+        val mappedByteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, file.length())
+        fileInputStream.close()
+        return mappedByteBuffer
+    }
 
+    fun getInterpreter(context: Context, modelFileName: String): Interpreter {
+        val modelBuffer = loadModelFile(context, modelFileName)
+        return Interpreter(modelBuffer)
+    }
 
 
 //    fun initializeInterpreter(): String {

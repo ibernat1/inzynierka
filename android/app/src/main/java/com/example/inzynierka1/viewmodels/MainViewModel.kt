@@ -72,7 +72,6 @@ open class MainViewModel @Inject constructor(
         }
     }
 
-
     init {
         _uiState.value = MainUiState()
         onCreate()
@@ -85,12 +84,10 @@ open class MainViewModel @Inject constructor(
     }
 
     fun savePreferences() {
-
         viewModelScope.launch {
             userPreferencesRepository.updateUserName(userName.toString())
             userPreferencesRepository.updateCollectingTime(collectingTimeString.toString())
         }
-
     }
 
     fun isTimeValid(): Boolean {
@@ -105,14 +102,29 @@ open class MainViewModel @Inject constructor(
         return content
     }
 
-    fun getInputShape()
-    {
-        inferenceScore.value = modelManager.simpleInference(getDataFromFile())
+
+
+    fun uploadDataToServer() {
+        val file = fileManager.getFile("iga20241127174532.txt")
+        CoroutineScope(Dispatchers.Main).launch {
+            val response = withContext(Dispatchers.IO) {
+                httpClient.uploadFileToServer(file, "http://192.168.100.102:5000/upload-data")
+            }
+            println("Response from server: $response")
+        }
     }
 
-    fun getModel(){
+
+    fun getModel() {
         viewModelScope.launch {
-            httpClient.downloadTFLiteModel("http://192.168.100.102:5000/download-model","modelh.tflie")
+            val downloadedFile = httpClient.downloadTFLiteModel("http://192.168.100.102:5000/download-model", "modelh.tflite")
+
+            if (downloadedFile != null && downloadedFile.exists()) {
+                val score = modelManager.simpleInference(getDataFromFile())
+                inferenceScore.value = score
+            } else {
+                println("Błąd: Model nie został pobrany.")
+            }
         }
     }
 
@@ -133,7 +145,7 @@ open class MainViewModel @Inject constructor(
                 }
                 withContext(Dispatchers.Main) {
                     isCollectingData = false
-                    val sensorValues = sensorsManager.getValues()
+                    val sensorValues = sensorsManager.getValuesList()
                     Log.d(TAG, "Zakończono zbieranie danych")
                     updateUserState(UserState.COLLECTED_DATA)
                     fileName = fileManager.getFileName(userName.value)

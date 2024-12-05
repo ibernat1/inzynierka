@@ -18,10 +18,10 @@ private  const val TAG = "SENSORS"
 
 class SensorsManager @Inject constructor(@ApplicationContext private val context: Context): SensorEventListener{
     private lateinit var sensorManager: SensorManager
-    private var message: String by mutableStateOf("brak danych")
-    private val reading = mutableListOf<Float>()
-    private val values = mutableListOf<String>()
-    private val valuesFloat = mutableListOf<List<Float>>()
+    var message: String by mutableStateOf("brak danych")
+    val reading = mutableListOf<Float>()
+    val values = mutableListOf<String>()
+    val valuesFloat = mutableListOf<List<Float>>()
 
     private var mainViewModel: MainViewModel? = null
 
@@ -69,7 +69,8 @@ class SensorsManager @Inject constructor(@ApplicationContext private val context
         return
     }
 
-    fun getValues(): List<String> {
+
+    fun getValuesList(): List<String> {
         Log.d("Sensors", values.toString())
         return values
     }

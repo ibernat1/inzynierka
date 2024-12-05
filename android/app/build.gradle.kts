@@ -38,11 +38,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
@@ -67,7 +67,7 @@ buildscript {
     }
     dependencies {
         // Add Mockito core library to the classpath
-        classpath("org.mockito:mockito-core:3.12.4")
+        classpath(libs.mockito.core)
     }
 }
 
@@ -87,19 +87,23 @@ dependencies {
 //    implementation(libs.litert)
     implementation(libs.firebase.firestore.ktx)
 
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation(libs.okhttp)
 
 
     testImplementation(libs.junit)
-    testImplementation ("org.mockito.kotlin:mockito-kotlin:3.2.0")
-    testImplementation("junit:junit:4.12")
-    testImplementation("io.mockk:mockk:1.12.0")
+    testImplementation (libs.mockito.kotlin)
+    testImplementation(libs.junit.v412)
+    testImplementation(libs.mockk)
+    testImplementation(libs.junit.jupiter)
+    testImplementation (libs.mockito.mockito.inline)
+
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation("org.mockito:mockito-core:3.12.4")
+
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.0.5")
