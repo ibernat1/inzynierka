@@ -60,7 +60,7 @@ open class MainViewModel @Inject constructor(
     var collectingTime: Long = 0 //10000
     val progress: MutableState<Float> = mutableFloatStateOf(0F)
 
-    private var isCollectingData = false
+    var isCollectingData = false
 
     private var fileName: String = ""
 
@@ -101,7 +101,6 @@ open class MainViewModel @Inject constructor(
     }
 
     fun getDataFromFile(): List<List<Float>>{
-//        val file = fileManager.getFile(fileName)
         val file = fileManager.getFile("iga20241127174532.txt")
         val content =  fileReader.readFromFile(file)
         Log.d(TAG, content.toString())

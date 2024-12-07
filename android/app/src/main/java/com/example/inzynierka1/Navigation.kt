@@ -5,7 +5,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.inzynierka1.ui.screens.CollectScreen
+import com.example.inzynierka1.ui.screens.DataCollectionScreen
 import com.example.inzynierka1.ui.screens.MenuScreen
 import com.example.inzynierka1.ui.screens.ModelScreen
 import com.example.inzynierka1.ui.screens.PreferencesScreen
@@ -25,7 +25,7 @@ fun Navigation() {
             PreferencesScreen(navController, viewModel)
         }
         composable("Collect"){
-            CollectScreen(viewModel)
+            DataCollectionScreen(viewModel)
         }
         composable("Model"){
             ModelScreen(viewModel)

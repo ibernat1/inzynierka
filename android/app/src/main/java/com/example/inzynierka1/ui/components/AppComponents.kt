@@ -1,5 +1,8 @@
 package com.example.inzynierka1.ui.components
 
+import android.media.MediaPlayer
+import android.media.RingtoneManager
+import android.media.SoundPool
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.inzynierka1.R
 
 
 @Composable
@@ -107,6 +111,21 @@ fun NumberInput(input: MutableState<String>, label: String){
         label = {
             Text (label)
         })
+}
+
+fun playNotificationSound(context: android.content.Context) {
+    val mediaPlayer = MediaPlayer.create(context, R.raw.sound)
+    mediaPlayer.start()
+    mediaPlayer.setOnCompletionListener { it.release() } // Zwolnienie zasobów po zakończeniu
+}
+
+
+fun playSoundWithSoundPool(context: android.content.Context) {
+    val soundPool = SoundPool.Builder().setMaxStreams(1).build()
+    val soundId = soundPool.load(context, R.raw.sound, 1)
+    soundPool.setOnLoadCompleteListener { _, _, _ ->
+        soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
+    }
 }
 
 @Composable

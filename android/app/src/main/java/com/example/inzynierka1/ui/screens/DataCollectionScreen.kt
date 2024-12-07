@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,16 +29,19 @@ import androidx.compose.ui.unit.sp
 import com.example.inzynierka1.R
 import com.example.inzynierka1.ui.components.SimpleButton
 import com.example.inzynierka1.ui.components.DisplayInfo
+import com.example.inzynierka1.ui.components.playNotificationSound
+import com.example.inzynierka1.ui.components.playSoundWithSoundPool
 import com.example.inzynierka1.uiState.UserState
 import com.example.inzynierka1.viewmodels.MainViewModel
 
 @Composable
-fun CollectScreen(viewModel: MainViewModel) {
+fun DataCollectionScreen(viewModel: MainViewModel) {
 
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
 
     var showToast by remember { mutableStateOf(false) }
+    var hasPlayedSound by remember { mutableStateOf(false) }
 
     val backgroundColor = MaterialTheme.colorScheme.surfaceDim
     val buttonColor = MaterialTheme.colorScheme.primary
@@ -122,6 +126,13 @@ fun CollectScreen(viewModel: MainViewModel) {
                 progress = { viewModel.progress.value },
                 modifier = Modifier.fillMaxWidth(),
             )
+
+            LaunchedEffect(viewModel.progress.value) {
+                if (viewModel.progress.value > 0.99f && !hasPlayedSound) {
+                    hasPlayedSound = true
+                    playSoundWithSoundPool(context)
+                }
+            }
         }
         if (showToast){
             Toast.makeText(context, stringResource(id = R.string.collectToast), Toast.LENGTH_SHORT).show()

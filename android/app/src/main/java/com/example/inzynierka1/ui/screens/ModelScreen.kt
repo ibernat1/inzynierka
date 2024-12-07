@@ -21,6 +21,7 @@ import androidx.navigation.NavHostController
 import com.example.inzynierka1.R
 import com.example.inzynierka1.ui.components.DisplayInfo
 import com.example.inzynierka1.ui.components.SimpleButton
+import com.example.inzynierka1.ui.components.playSoundWithSoundPool
 import com.example.inzynierka1.viewmodels.MainViewModel
 
 @Composable

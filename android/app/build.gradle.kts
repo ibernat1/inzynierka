@@ -96,6 +96,8 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.junit.jupiter)
     testImplementation (libs.mockito.mockito.inline)
+    testImplementation (libs.kotlinx.coroutines.test)
+
 
 
     androidTestImplementation(libs.androidx.junit)
