@@ -2,11 +2,9 @@ package com.example.inzynierka1
 
 import android.content.Context
 import junit.framework.TestCase.assertEquals
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import org.junit.Before
+import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.mockStatic
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.whenever
@@ -20,7 +18,7 @@ class FileManagerTest2 {
 
     private lateinit var fileManager: FileManager
 
-    @BeforeEach
+    @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         fileManager = FileManager(context)
@@ -29,19 +27,19 @@ class FileManagerTest2 {
     @Test
     fun `test getFileName should return correct filename with timestamp`() {
         // Mockowanie bieżącej daty
-        val mockDate = LocalDateTime.of(2024, 12, 5, 14, 30, 0, 0) // 2024-12-05 14:30:00
+        val date = LocalDateTime.of(2024, 12, 5, 14, 30, 0, 0) // 2024-12-05 14:30:00
         val formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
-        val formattedDate = mockDate.format(formatter)
+        val formattedDate = date.format(formatter)
 
         // Mockowanie LocalDateTime.now() przy użyciu mockStatic
         mockStatic(LocalDateTime::class.java).use { mock ->
-            whenever(LocalDateTime.now()).thenReturn(mockDate)
+            whenever(LocalDateTime.now()).thenReturn(date)
 
             // Testowanie metody
             val result = fileManager.getFileName("testFile")
 
             // Sprawdzenie, czy wynik jest zgodny z oczekiwaniem
-            Assertions.assertEquals("testFile$formattedDate.txt", result)
+            assertEquals("testFile$formattedDate.txt", result)
         }
     }
 }
