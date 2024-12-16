@@ -4,12 +4,16 @@ import android.hardware.SensorEvent
 import android.hardware.SensorManager
 import android.util.Log
 import com.example.inzynierka1.SensorsManager
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.spyk
+import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import org.junit.Before
 import org.junit.Test
-import java.lang.reflect.Field
 
 class SensorsManagerTest {
 
@@ -58,22 +62,17 @@ class SensorsManagerTest {
 
     @Test
     fun `test onSensorChanged updates message and lists correctly`() {
-        // Tworzymy mocka SensorEvent
-        val mockSensorEvent = mockk<SensorEvent>(relaxed = true)
-
-        // Tworzymy mocka dla sensora
         val mockSensor = mockk<Sensor>()
+        every { mockSensor.type } returns Sensor.TYPE_ACCELEROMETER
 
-        // Przygotowujemy dane, które będą ustawione
-        val values = floatArrayOf(1.0f, 2.0f, 3.0f)
+        val event = createMockSensorEvent(
+            mockSensor,
+            floatArrayOf(1.0f, 2.0f, 3.0f),
+            accuracy = 3,
+            timestamp = 5_000_000_000L
+        )
+        sensorsManager.onSensorChanged(event)
 
-        // Ustawiamy zachowanie mocka SensorEvent
-        every { mockSensorEvent.sensor } returns mockSensor
-        every { mockSensorEvent.sensor.type } returns Sensor.TYPE_ACCELEROMETER
-        every { mockSensorEvent.values } returns values
-
-        // Wywołanie metody onSensorChanged
-        sensorsManager.onSensorChanged(mockSensorEvent)
 
         // Sprawdzenie, czy message zostało zaktualizowane
         assertEquals("1.0,2.0,3.0", sensorsManager.message)
@@ -87,6 +86,7 @@ class SensorsManagerTest {
         // Sprawdzenie, czy valuesFloat zawiera odpowiednią listę
         assertTrue(sensorsManager.valuesFloat.contains(listOf(1.0f, 2.0f, 3.0f)))
     }
+
 
     @Test
     fun `test getValuesList returns correct values`() {
@@ -143,4 +143,35 @@ class SensorsManagerTest {
         // Sprawdzenie, czy wynik jest zgodny z oczekiwaną wartością
         assertEquals(expectedMessage, result)
     }
+
+    fun createMockSensorEvent(
+        sensor: Sensor,
+        values: FloatArray,
+        accuracy: Int,
+        timestamp: Long
+    ): SensorEvent {
+        val constructor = SensorEvent::class.java.getDeclaredConstructor(Int::class.java)
+        constructor.isAccessible = true
+        val sensorEvent = constructor.newInstance(values.size)
+
+        SensorEvent::class.java.getDeclaredField("sensor").apply {
+            isAccessible = true
+            set(sensorEvent, sensor)
+        }
+        SensorEvent::class.java.getDeclaredField("values").apply {
+            isAccessible = true
+            set(sensorEvent, values)
+        }
+        SensorEvent::class.java.getDeclaredField("accuracy").apply {
+            isAccessible = true
+            set(sensorEvent, accuracy)
+        }
+        SensorEvent::class.java.getDeclaredField("timestamp").apply {
+            isAccessible = true
+            set(sensorEvent, timestamp)
+        }
+
+        return sensorEvent
+    }
+
 }

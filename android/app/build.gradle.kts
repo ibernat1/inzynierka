@@ -88,6 +88,8 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
 
     implementation(libs.okhttp)
+    implementation(libs.core)
+    implementation(libs.core.ktx)
 
 
     testImplementation(libs.junit)
@@ -97,6 +99,8 @@ dependencies {
     testImplementation(libs.junit.jupiter)
     testImplementation (libs.mockito.mockito.inline)
     testImplementation (libs.kotlinx.coroutines.test)
+    testImplementation (libs.robolectric)
+
 
 
 

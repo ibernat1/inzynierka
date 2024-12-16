@@ -2,6 +2,9 @@ package com.example.inzynierka1
 
 import android.content.Context
 import android.os.Environment
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertTrue
+import org.junit.Before
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -24,7 +27,7 @@ class FileManagerTest {
 
     private lateinit var fileManager: FileManager
 
-    @BeforeEach
+    @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         fileManager = FileManager(context)
@@ -45,7 +48,7 @@ class FileManagerTest {
             val result = fileManager.getFileName("testFile")
 
             // Sprawdzenie, czy wynik jest zgodny z oczekiwaniem
-            Assertions.assertEquals("testFile$formattedDate.txt", result)
+            assertEquals("testFile$formattedDate.txt", result)
         }
     }
 
@@ -69,6 +72,6 @@ class FileManagerTest {
         verify(mockFile).createNewFile()
 
         // Sprawdzenie, czy wynik jest poprawnym obiektem File
-        Assertions.assertTrue(result.exists())
+        assertTrue(result.exists())
     }
 }
